@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Regression" parallel="false" thread-count="2" verbose="1">
+	<test name="Test">
+		<parameter name="scenario.file.loc" value="scenarios/web" />
+		<parameter name="txt.scenario.file.ext" value=".feature" />
+		<classes>
+			<class name="com.wellsfargo.automation.roco.steps.RocoDashboardPageStepDefinitions" />
+		</classes>
+	</test>
+</suite>

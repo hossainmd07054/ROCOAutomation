@@ -1,0 +1,11 @@
+[{	
+		"name1": "Spouse",
+		"dataType1": "DOUBLE",
+		"unit1": "Volts"
+	},
+	{
+		"name": "Spouse",
+		"dataType": "DOUBLE",
+		"unit": "Volts"
+	}
+]
