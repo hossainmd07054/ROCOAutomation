@@ -18,7 +18,6 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import com.wellsfargo.automation.roco.base.RocoTestBase;
-import com.wellsfargo.automation.roco.base.WebDriverTestCase;
 
 public class RocoDashboardPageObjects extends RocoTestBase{
 	public RocoDashboardPageObjects() {
@@ -36,11 +35,11 @@ public class RocoDashboardPageObjects extends RocoTestBase{
 
 
 
-	@FindBy (xpath="//*[@name='password']")
-	private WebElement txtbox_password;
-	public WebElement getPasswordTextBox() {
-		return txtbox_password;
-	}
+//	@FindBy (xpath="//*[@name='password']")
+//	private WebElement txtbox_password;
+//	public WebElement getPasswordTextBox() {
+//		return txtbox_password;
+//	}
 	@FindBy(how=How.XPATH, using="//*[@name='username']")
 	public WebElement getUsernameTextBox;
 

@@ -1,5 +1,4 @@
 package com.wellsfargo.automation.roco.base;
-
 import java.awt.TrayIcon.MessageType;
 import java.io.File;
 import java.io.IOException;
@@ -8,24 +7,29 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import java.lang.Object;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-//import org.apache.log4j.lf5.viewer.configure.ConfigurationManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Reporter;
+//import org.testng.Reporter;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import com.qmetry.qaf.automation.core.ConfigurationManager;
+import com.qmetry.qaf.automation.core.MessageTypes;
+import com.qmetry.qaf.automation.ui.api.PageLocator;
+import com.qmetry.qaf.automation.ui.webdriver.QAFExtendedWebDriver;
+import com.qmetry.qaf.automation.util.Reporter;
+import com.qmetry.qaf.automation.step.client.text.BDDTestFactory2;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class RocoTestBase  {
+public class RocoTestBase extends WFBaseTestPage{
 	public static WebDriver driver;
 
 	public static int SMALL_WAIT = 0;
@@ -34,7 +38,7 @@ public class RocoTestBase  {
 	public static int VERY_LONG_WAIT = 0;
 	public static int iSeleniumWaitTime = 0;
 
-	private String nasaBaseURL = null;
+//	private String nasaBaseURL = null;
 
 	public RocoTestBase() {
 		iSeleniumWaitTime = NumberUtils.toInt(ConfigurationManager.getBundle().getString("selenium.wait.timeout"));
@@ -43,15 +47,48 @@ public class RocoTestBase  {
 		LONG_WAIT = iSeleniumWaitTime * 6;
 		VERY_LONG_WAIT = iSeleniumWaitTime * 10;
 	}
-	public void invoke() {
-		launchPage(null);
-	}
+//	public void invoke() {
+//		launchPage(null);
+//	}
+	@Override
 	public void waitForPageToLoad() {
 		super.waitForPageToLoad();
 	}
+	@Override
 	public void openPage(PageLocator locator, Object... args) {
-
+		driver.get("/");
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
 	}
+	public QAFExtendedWebDriver getDriver() {
+		return getTestBase().getDriver();
+	}
+	public void verifyPageTitle(String exectedPageTitle) {
+		try {
+			String acutalTitle = getTestBase().getDriver().getTitle();
+			Reporter.log("Expected Title: "+ exectedPageTitle+" -- " +"Acutal Received: "+acutalTitle );
+		}
+		catch (Exception e) {
+			Reporter.logWithScreenShot("Failed to get the page title. Exception:"+ e.getMessage(), MessageTypes.Fail);
+		}
+	}
+	public String getPageTitle() {
+		String actualTitle = null;
+		try {
+			waitForPageToLoad();
+			actualTitle = getTestBase().getDriver().getTitle();
+			Reporter.log("Actual Title: " + actualTitle);
+		}
+		catch(Exception e) {
+			Reporter.logWithScreenShot("Failed to get the page title. Exception:"+ e.getMessage(), MessageTypes.Fail);
+		}
+		return actualTitle;
+	}
+	
+	
+	
+	
 	@Test
 	public void openBrowser() throws Exception {
 		WebDriverManager.chromedriver().setup();
@@ -130,33 +167,7 @@ public class RocoTestBase  {
 		return true;
 	}
 
-	public WebDriver getDriver() {
-		return getTestBase().getDriver();
-	}
-	public QAFExtendedWebDriver getDriver() {
-		return getTestBase().getDriver();
-	}
-	public void verifyPageTitle(String exectedPageTitle) {
-		try {
-			String acutalTitle = getTestBase().getDriver().getTitle();
-			Reporter.log("Expected Title: "+ exectedPageTitle+" -- " +"Acutal Received: "+acutalTitle );
-		}
-		catch (Exception e) {
-			Reporter.LogWithScreenShot("Failed to get the page title. Exception:"+ e.getMessage(), MessageTypes.Fail);
-		}
-	}
-	public String getPageTitle() {
-		String actualTitle = null;
-		try {
-			waitForPageToLoad();
-			actualTitle = getTestBase().getDriver().getTitle();
-			Reporter.log("Actual Title: " + actualTitle);
-		}
-		catch(Exception e) {
-			Reporter.LogWithScreenShot("Failed to get the page title. Exception:"+ e.getMessage(), MessageTypes.Fail);
-		}
-		return actualTitle;
-	}
+	
 	public class OpenPage {
 		public String PAGE_URL ="http://www.AUT.com";
 		public String PAGE_TITLE = "Welcome!";
